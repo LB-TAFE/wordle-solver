@@ -13,7 +13,7 @@ class WordleSolver:
             self.characters_with_known_wrong_indexes[char] = []
         self.word_theory = ['-', '-', '-', '-', '-']
 
-    def play(self):
+    def main(self):
         while True:
             self.make_suggestion()
             user_input = input(">> ")
@@ -116,4 +116,4 @@ class WordleSolver:
 
 if __name__ == '__main__':
     solver = WordleSolver()
-    solver.play()
+    solver.main()
