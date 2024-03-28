@@ -14,6 +14,7 @@ class WordleSolver:
         self.word_theory = ['-', '-', '-', '-', '-']
 
     def main(self):
+        print("Syntax: <word> <score> | - for not in word, ? for in wrong place, <char> for in correct place\n")
         while True:
             self.make_suggestion()
             user_input = input(">> ")
@@ -66,7 +67,39 @@ class WordleSolver:
         return word_list
 
     def get_possible_solutions(self):
-        list_one = []
+        # list_one = []
+        #
+        # for word in self.word_list:
+        #     for index, char in enumerate(word):
+        #         if char in self.chars_not_in_word:
+        #             break
+        #         elif index in self.characters_with_known_wrong_indexes[char]:
+        #             break
+        #         elif char not in self.characters_with_known_wrong_indexes:
+        #             break
+        #     else:
+        #         list_one.append(word)
+        #
+        # list_two = []
+        # for word in self.word_list:
+        #     for index, char in enumerate(word):
+        #         if (self.word_theory[index] == '-'):
+        #             continue
+        #         if (self.word_theory[index] != char):
+        #             break
+        #     else:
+        #         list_two.append(word)
+        #
+        # final_list = []
+        # for word in list_one:
+        #     if word in list_two:
+        #         final_list.append(word)
+        #
+        # self.word_list = final_list
+        #
+        #
+        #
+        guess_list = []
 
         for word in self.word_list:
             for index, char in enumerate(word):
@@ -76,25 +109,16 @@ class WordleSolver:
                     break
                 elif char not in self.characters_with_known_wrong_indexes:
                     break
-            else:
-                list_one.append(word)
-
-        list_two = []
-        for word in self.word_list:
-            for index, char in enumerate(word):
-                if (self.word_theory[index] == '-'):
+                elif self.word_theory[index] == '-':
                     continue
-                if (self.word_theory[index] != char):
+                elif self.word_theory[index] != char:
                     break
             else:
-                list_two.append(word)
+                guess_list.append(word)
 
-        final_list = []
-        for word in list_one:
-            if word in list_two:
-                final_list.append(word)
+        self.word_list = guess_list
 
-        self.word_list = final_list
+
 
 
     def enter_result(self, entered_word, result_given):
