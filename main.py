@@ -41,8 +41,26 @@ class WordleSolver:
 
         for word in best_words:
             for char in word:
-                if char in 'aeiou':
-                    ranked_suggestions[word] += 1
+                # TODO: Apply a weight to each letter through a dictionary, the weight would effect the score of the word in a similar manner
+                #  to below
+                match char:
+
+                    case 'e':
+                        ranked_suggestions[word] += 11
+                    case 'a':
+                        ranked_suggestions[word] += 7.11
+                    case 'i':
+                        ranked_suggestions[word] += 3.72
+                    case 'o':
+                        ranked_suggestions[word] += 3.32
+                    case 'u':
+                        ranked_suggestions[word] += 6.97
+                    case 'z':
+                        ranked_suggestions[word] -=1
+                    case 'q':
+                        ranked_suggestions[word] -=1
+                    case 'x':
+                        ranked_suggestions[word] -= 1
 
         best_score = max(ranked_suggestions.values())
         best_words = []
