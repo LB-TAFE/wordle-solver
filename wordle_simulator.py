@@ -10,7 +10,7 @@ class WordleSimulator:
 
     def play(self):
         while True:
-            guess = self.solver.get_best_suggestion()
+            guess = self.solver.return_best_suggestion()
             if guess == self.word:
                 return (True, self.guesses_left)
             self.guesses_left -= 1
