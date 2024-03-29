@@ -12,9 +12,7 @@ class WordleSolver:
         self.characters_with_known_wrong_indexes = {}
         for char in ascii_lowercase:
             self.characters_with_known_wrong_indexes[char] = []
-
         self.letter_weights = self.load_letter_weights()
-
         self.word_theory = ['-', '-', '-', '-', '-']
         self.chars_in_word = []
 
@@ -88,6 +86,24 @@ class WordleSolver:
         print(f"All possible words: {self.word_list}\n")
         print(f"Best words: {best_words}\n")
         print(f"Suggestion: {random.choice(best_words)}")
+
+    def get_best_suggestion(self):
+        ranked_suggestions = {}
+        for word in self.word_list:
+            ranked_suggestions[word] = 0
+            for char in self.letter_weights:
+                if char in word:
+                    ranked_suggestions[word] += self.letter_weights[char]
+
+
+        best_score = max(ranked_suggestions.values())
+        best_words = []
+                    
+        for word in self.word_list:
+            if ranked_suggestions[word] == best_score:
+                best_words.append(word)
+        
+        return random.choice(best_words)
     
 
 
