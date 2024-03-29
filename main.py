@@ -3,6 +3,7 @@ import random
 
 class WordleSolver:
 
+
     def __init__(self):
 
         self.WORDBANK_PATH = 'target_words.txt'
@@ -15,6 +16,7 @@ class WordleSolver:
         self.letter_weights = self.load_letter_weights()
         self.word_theory = ['-', '-', '-', '-', '-']
         self.chars_in_word = []
+
 
     def main(self):
         print("Syntax: <word> <score> | - for not in word, ? for in wrong place, <char> for in correct place\n")
@@ -47,8 +49,6 @@ class WordleSolver:
         with open(self.WORD_WEIGHT_PATH, 'w') as file:
             for char in word_appearences:
                 file.write(f"{char} {word_appearences[char]}\n")
-            
-
                 
 
     def load_letter_weights(self):
@@ -63,8 +63,6 @@ class WordleSolver:
             letter_weights[processed_text[0]] = float(processed_text[1])
 
         return letter_weights
-
-
 
 
     def make_suggestion(self):
@@ -87,13 +85,16 @@ class WordleSolver:
         print(f"Best words: {best_words}\n")
         print(f"Suggestion: {random.choice(best_words)}")
 
+
     def get_best_suggestion(self):
         ranked_suggestions = {}
         for word in self.word_list:
             ranked_suggestions[word] = 0
             for char in self.letter_weights:
                 if char in word:
-                    ranked_suggestions[word] += self.letter_weights[char]
+                    ranked_suggestions[word] += self.letter_weights[char]*10
+            for char in word:
+                ranked_suggestions[word] += self.letter_weights[char]
 
 
         best_score = max(ranked_suggestions.values())
@@ -106,8 +107,6 @@ class WordleSolver:
         return random.choice(best_words)
     
 
-
-
     def load_words(self):
         word_list = []
         with open(self.WORDBANK_PATH) as file:
@@ -117,6 +116,7 @@ class WordleSolver:
             word_list.append(line.strip('\n'))
 
         return word_list
+
 
     def get_possible_solutions(self):
         guess_list = []
@@ -139,8 +139,6 @@ class WordleSolver:
                     guess_list.append(word)
 
         self.word_list = guess_list
-
-
 
 
     def enter_result(self, entered_word, result_given):

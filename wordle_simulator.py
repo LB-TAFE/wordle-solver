@@ -12,10 +12,10 @@ class WordleSimulator:
         while True:
             guess = self.solver.get_best_suggestion()
             if guess == self.word:
-                return True
+                return (True, self.guesses_left)
             self.guesses_left -= 1
             if self.guesses_left == 0:
-                return False
+                return (False, self.guesses_left)
             score = self.score_guess(guess)
             self.solver.enter_result(guess, score)
             self.solver.get_possible_solutions()
