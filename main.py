@@ -19,15 +19,78 @@ class WordleSolver:
 
 
     def main(self):
-        print("Syntax: <word> <score> | - for not in word, ? for in wrong place, <char> for in correct place\n")
+        help_message = """Registered commands:
+
+        help - displays this message
+
+        exit - exits the program
+
+        weigh - weighs the letters in the word bank and saves the weights
+
+        guess <word> <score> - enters a guess and the score given by the game, where - is a wrong letter, ? is a misplaced letter, and a letter is a match. Example: guess paper ??-er
+
+        reset - resets the solver
+
+        possible - displays the current possible solutions
+
+        suggestion - displays the best suggestion based on the current possible solutions
+
+        clear - clears the screen
+        """
+        print(f"{help_message}\n")
+        self.get_best_suggestion()
+        print()
         while True:
-            self.make_suggestion()
-            user_input = input(">> ")
-            split_input = user_input.split(' ')
-            self.enter_result(split_input[0], split_input[1])
-            self.get_possible_solutions()
-            print(f"Not in word: {self.chars_not_in_word}")
-            print(f"Other: {self.characters_with_known_wrong_indexes}")
+            command = input("$: ").lower().split(' ')
+            match command[0]:
+                case "help":
+                    print(f"{help_message}\n")
+                
+                case "exit":
+                    print("Bye")
+                    break
+
+                case "weigh":
+                    print("Working..")
+                    self.sync_letter_weights()
+                    print("Letters weighed")
+                    self.load_letter_weights()
+                    print("Letter weights loaded")
+
+                case "guess":
+                    if len(command) != 3:
+                        if len(command) == 4 and command[3] == "":
+                            pass
+                        else:
+                            print("This command takes 2 arguments: <word>, <score>")
+                            continue
+                    if (len(command[1]) != 5) or (len(command[2]) != 5):
+                        print("<word> and <score> must be 5 characters long")
+                        continue
+                    self.enter_result(command[1], command[2])
+                    self.get_possible_solutions()
+                    self.get_best_suggestion()
+                    print()
+
+                case "reset":
+                    self.__init__()
+
+                case "possible":
+                    print(self.word_list, "\n")
+
+                case "suggestion":
+                    self.get_best_suggestion()
+                    print()
+
+                case "clear":
+                    print("\033[H\033[J", end="")
+
+                case "":
+                    continue
+
+                case _:
+                    print("Invalid command")
+
 
 
     def sync_letter_weights(self):
@@ -65,13 +128,15 @@ class WordleSolver:
         return letter_weights
 
 
-    def make_suggestion(self):
+    def get_best_suggestion(self):
         ranked_suggestions = {}
         for word in self.word_list:
             ranked_suggestions[word] = 0
             for char in self.letter_weights:
                 if char in word:
-                    ranked_suggestions[word] += self.letter_weights[char]
+                    ranked_suggestions[word] += self.letter_weights[char]*10
+            for char in word:
+                ranked_suggestions[word] += self.letter_weights[char]
 
 
         best_score = max(ranked_suggestions.values())
@@ -81,12 +146,10 @@ class WordleSolver:
             if ranked_suggestions[word] == best_score:
                 best_words.append(word)
         
-        print(f"All possible words: {self.word_list}\n")
-        print(f"Best words: {best_words}\n")
-        print(f"Suggestion: {random.choice(best_words)}")
+        print(f"Best words: {best_words}\nSuggested word: {random.choice(best_words)}")
 
 
-    def get_best_suggestion(self):
+    def return_best_suggestion(self):
         ranked_suggestions = {}
         for word in self.word_list:
             ranked_suggestions[word] = 0
