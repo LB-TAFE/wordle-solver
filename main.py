@@ -93,6 +93,7 @@ class WordleSolver:
 
 
 
+
     def sync_letter_weights(self):
         word_appearences = {}
         for char in ascii_lowercase:

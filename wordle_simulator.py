@@ -53,7 +53,7 @@ class WordleSimulator:
         return response_word
 
     
-    def generate_random_word_data(self) -> dict:
+    def generate_random_word_data(self) -> str:
         """
         Generates a randomly chosen word from the word bank.
         """
